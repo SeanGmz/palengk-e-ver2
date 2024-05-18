@@ -1,36 +1,27 @@
-import {cart, addToCart} from '../data/cart.js';
-import {products, loadProducts} from '../data/products.js';
-import {formatCurrency} from './utils/money.js';
+import { cart, addToCart } from "../data/cart.js";
+import { products, loadProducts } from "../data/products.js";
+import { formatCurrency } from "./utils/money.js";
 
 loadProducts(renderProductsGrid);
 
-function renderProductsGrid() {
+function renderProductsGrid(filteredProducts = products) {
   let productsHTML = '';
 
-  products.forEach((product) => {
+  if (filteredProducts.length === 0){
+    productsHTML = '<div style="text-align: center"> No items found </p> </div>'
+  } else {
+  filteredProducts.forEach((product) => {
     productsHTML += `
       <div class="product-container">
         <div class="product-image-container">
-          <img class="product-image"
-            src="${product.image}">
+          <img class="product-image" src="${product.image}">
         </div>
-
-        <div class="product-name limit-text-to-2-lines">
-          ${product.name}
-        </div>
-
+        <div class="product-name limit-text-to-2-lines">${product.name}</div>
         <div class="product-rating-container">
-          <img class="product-rating-stars"
-            src="${product.getStarsUrl()}">
-          <div class="product-rating-count link-primary">
-            ${product.rating.count}
-          </div>
+          <img class="product-rating-stars" src="${product.getStarsUrl()}">
+          <div class="product-rating-count link-primary">${product.rating.count}</div>
         </div>
-
-        <div class="product-price">
-          ${product.getPrice()}
-        </div>
-
+        <div class="product-price">${product.getPrice()}</div>
         <div class="product-quantity-container">
           <select>
             <option selected value="1">1</option>
@@ -45,43 +36,49 @@ function renderProductsGrid() {
             <option value="10">10</option>
           </select>
         </div>
-
-        ${product.extraInfoHTML()}
-
         <div class="product-spacer"></div>
-
         <div class="added-to-cart">
-          <img src="images/icons/checkmark.png">
-          Added
+          <img src="images/icons/checkmark.png"> Added
         </div>
-
-        <button class="add-to-cart-button button-primary js-add-to-cart"
-        data-product-id="${product.id}">
+        <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}">
           Add to Cart
         </button>
       </div>
     `;
   });
+  }
 
   document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
-  function updateCartQuantity() {
-    let cartQuantity = 0;
-
-    cart.forEach((cartItem) => {
-      cartQuantity += cartItem.quantity;
+  document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+    button.addEventListener('click', () => {
+      const productId = button.dataset.productId;
+      addToCart(productId);
+      updateCartQuantity();
     });
+  });
 
-    document.querySelector('.js-cart-quantity')
-      .innerHTML = cartQuantity;
-  }
-
-  document.querySelectorAll('.js-add-to-cart')
-    .forEach((button) => {
-      button.addEventListener('click', () => {
-        const productId = button.dataset.productId;
-        addToCart(productId);
-        updateCartQuantity();
-      });
-    });
+  updateCartQuantity();
 }
+
+function updateCartQuantity() {
+  let cartQuantity = 0;
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
+  });
+  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+}
+
+function handleSearch() {
+  const searchTerm = document.getElementById('search-items').value.toLowerCase();
+  const filteredProducts = products.filter(product => product.name.toLowerCase().includes(searchTerm));
+  renderProductsGrid(filteredProducts);
+}
+document.getElementById('search-items').addEventListener('input', handleSearch);
+document.getElementById('search-btn').addEventListener('click', handleSearch);
+
+document.getElementById('search-items').addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    handleSearch();
+  }
+});
