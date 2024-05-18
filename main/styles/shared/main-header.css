@@ -105,6 +105,7 @@
 
 .orders-link {
   color: white;
+  margin-block: auto;
 }
 
 .returns-text {
@@ -116,6 +117,7 @@
   display: block;
   font-size: 15px;
   font-weight: 700;
+
 }
 
 .cart-link {
