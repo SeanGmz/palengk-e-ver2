@@ -15,6 +15,7 @@
        repeat(...) is a special property that works with
        display: grid; */
   grid-template-columns: repeat(8, 1fr);
+  background-color: #f8f4f5;
 }
 
 /* @media is used to create responsive design (making the
@@ -24,6 +25,10 @@
 @media (max-width: 2000px) {
   .products-grid {
     grid-template-columns: repeat(7, 1fr);
+    row-gap: 20px;
+    column-gap: 20px;
+    padding-block: 20px;
+    padding-inline: 30px;
   }
 }
 
@@ -31,37 +36,57 @@
    less, we will divide the grid into 6 columns. */
 @media (max-width: 1600px) {
   .products-grid {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    row-gap: 20px;
+    column-gap: 20px;
+    padding-block: 20px;
+    padding-inline: 30px;
   }
 }
 
 @media (max-width: 1300px) {
   .products-grid {
     grid-template-columns: repeat(5, 1fr);
+    row-gap: 20px;
+    column-gap: 20px;
+    padding-block: 20px;
+    padding-inline: 20px;
   }
 }
 
 @media (max-width: 1000px) {
   .products-grid {
     grid-template-columns: repeat(4, 1fr);
+    row-gap: 20px;
+    column-gap: 20px;
+    padding-inline: 20px;
   }
 }
 
 @media (max-width: 800px) {
   .products-grid {
     grid-template-columns: repeat(3, 1fr);
+    row-gap: 20px;
+    column-gap: 20px;
+    padding-inline: 20px;
   }
 }
 
 @media (max-width: 575px) {
   .products-grid {
     grid-template-columns: repeat(2, 1fr);
+    row-gap: 20px;
+    column-gap: 20px;
+    padding-inline: 20px;
   }
 }
 
 @media (max-width: 450px) {
   .products-grid {
     grid-template-columns: 1fr;
+    row-gap: 20px;
+    column-gap: 20px;
+    padding-inline: 20px;
   }
 }
 
@@ -70,12 +95,11 @@
   padding-bottom: 25px;
   padding-left: 25px;
   padding-right: 25px;
-
-  border-right: 1px solid rgb(231, 231, 231);
-  border-bottom: 1px solid rgb(231, 231, 231);
-
+  background-color: #fff;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.1), 0 0px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
 .product-image-container {
