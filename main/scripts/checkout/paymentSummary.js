@@ -1,8 +1,8 @@
-import {cart} from '../../data/cart.js';
-import {getProduct} from '../../data/products.js';
-import {getDeliveryOption} from '../../data/deliveryOptions.js';
-import {formatCurrency} from '../utils/money.js';
-import {addOrder} from '../../data/orders.js';
+import { cart, clearCart } from "../../data/cart.js";
+import { getProduct } from "../../data/products.js";
+import { getDeliveryOption } from "../../data/deliveryOptions.js";
+import { formatCurrency } from "../utils/money.js";
+import { addOrder } from "../../data/orders.js";
 
 export function renderPaymentSummary() {
   let productPriceCents = 0;
@@ -20,20 +20,22 @@ export function renderPaymentSummary() {
   const taxCents = totalBeforeTaxCents * 0.1;
   const totalCents = totalBeforeTaxCents + taxCents;
 
+  const distinctItemCount = cart.length;
+
   const paymentSummaryHTML = `
     <div class="payment-summary-title">
       Order Summary
     </div>
 
-    <div class="payment-summary-row">
-      <div>Items (3):</div>
+    <div class="payment-summary-row ">
+      <div>Items (${distinctItemCount}):</div>
       <div class="payment-summary-money">
         ₱ ${formatCurrency(productPriceCents)}
       </div>
     </div>
 
     <div class="payment-summary-row">
-      <div>Shipping &amp; handling:</div>
+      <div>Shipping & handling:</div>
       <div class="payment-summary-money">
         ₱ ${formatCurrency(shippingPriceCents)}
       </div>
@@ -42,53 +44,59 @@ export function renderPaymentSummary() {
     <div class="payment-summary-row subtotal-row">
       <div>Total before tax:</div>
       <div class="payment-summary-money">
-      ₱ ${formatCurrency(totalBeforeTaxCents)}
+        ₱ ${formatCurrency(totalBeforeTaxCents)}
       </div>
     </div>
 
     <div class="payment-summary-row">
       <div>Estimated tax (10%):</div>
       <div class="payment-summary-money">
-      ₱ ${formatCurrency(taxCents)}
+        ₱ ${formatCurrency(taxCents)}
       </div>
     </div>
 
     <div class="payment-summary-row total-row">
       <div>Order total:</div>
       <div class="payment-summary-money">
-      ₱ ${formatCurrency(totalCents)}
+        ₱ ${formatCurrency(totalCents)}
       </div>
     </div>
 
-    <button class="place-order-button button-primary
-      js-place-order">
+    <button class="place-order-button button-primary js-place-order">
       Place your order
     </button>
   `;
 
-  document.querySelector('.js-payment-summary')
-    .innerHTML = paymentSummaryHTML;
+  document.querySelector(".js-payment-summary").innerHTML = paymentSummaryHTML;
 
-  document.querySelector('.js-place-order')
-    .addEventListener('click', async () => {
+  document
+    .querySelector(".js-place-order")
+    .addEventListener("click", async () => {
+      console.log("Place order button clicked");
+
       try {
-        const response = await fetch('https://supersimplebackend.dev/orders', {
-          method: 'POST',
+        const response = await fetch("https://supersimplebackend.dev/orders", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            cart: cart
-          })
+          body: JSON.stringify({ cart: cart }),
         });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
         const order = await response.json();
         addOrder(order);
 
-      } catch (error) {
-        console.log('Unexpected error. Try again later.');
-      }
+        // Clear the cart after successful order placement
+        clearCart();
 
-      window.location.href = 'orders.html';
+        // Redirect to the orders page
+        window.location.href = "orders.html";
+      } catch (error) {
+        console.error("Unexpected error. Try again later.", error);
+      }
     });
 }

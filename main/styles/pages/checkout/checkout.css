@@ -209,3 +209,19 @@
   margin-top: 11px;
   margin-bottom: 15px;
 }
+
+.quantity-input {
+  width: 60px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.quantity-input:focus {
+  outline: none;
+  border-color: #0076e6;
+  box-shadow: 0 0 5px rgba(0, 118, 230, 0.5);
+}
