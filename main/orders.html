@@ -69,10 +69,7 @@
           // Fetch product details using getProduct function
           const productDetails = getProduct(product.productId);
 
-          // Create and append product details
-          const productContainer = document.createElement("div");
-          productContainer.classList.add("product-container");
-
+          // Create and append product details directly to the order details grid
           const productImageContainer = document.createElement("div");
           productImageContainer.classList.add("product-image-container");
           productImageContainer.innerHTML = `<img src="${productDetails.image}" alt="${productDetails.name}" />`;
@@ -93,11 +90,9 @@
             </a>
           `;
 
-          productContainer.appendChild(productImageContainer);
-          productContainer.appendChild(productDetailsElement);
-          productContainer.appendChild(productActions);
-
-          orderDetailsGrid.appendChild(productContainer);
+          orderDetailsGrid.appendChild(productImageContainer);
+          orderDetailsGrid.appendChild(productDetailsElement);
+          orderDetailsGrid.appendChild(productActions);
         });
 
         orderContainer.appendChild(orderDetailsGrid);
