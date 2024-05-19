@@ -1,0 +1,51 @@
+
+.footer{
+    background-color: rgba(255, 255, 255, 1); 
+    box-shadow: 0 -4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    color: rgba(115, 115, 115, 1);
+    font-family: Krub;
+    font-weight: 500;
+
+}
+    
+.footerCont{
+    max-width: 1280px;
+  }
+  
+  .footer hr{
+    color: #EC938F;
+    height: 2px;
+  }
+  
+  .footer h3{
+    font-weight: 500;
+  }
+  
+  .footer h4{
+    font-weight: 500;
+    color:  #F55C52;
+  }
+
+.links{
+    list-style-type: none;
+    padding: 0;
+    margin: auto
+}
+
+.linktag{
+    padding: 3px;
+    justify-content: center;
+}
+
+.linktag a {
+    text-decoration: none;
+    color: rgba(115, 115, 115, 1);
+    transition: color .3s;
+    font-weight: 500;
+}
+
+ .linktag a:hover{
+    text-decoration: none;
+    color: rgba(27, 27, 27, 255);
+ }
