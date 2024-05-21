@@ -4,6 +4,9 @@ import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatCurrency } from "../utils/money.js";
 import { addOrder } from "../../data/orders.js";
 
+// Load realTotalCents from localStorage if available, otherwise initialize it as an empty array
+let realTotalCents = JSON.parse(localStorage.getItem("realTotalCents")) || [];
+
 export function renderPaymentSummary() {
   let productPriceCents = 0;
   let shippingPriceCents = 0;
@@ -74,6 +77,15 @@ export function renderPaymentSummary() {
     .addEventListener("click", async () => {
       console.log("Place order button clicked");
 
+      // Add the totalCents value to the beginning of the realTotalCents array
+      realTotalCents.unshift(totalCents);
+
+      // Save the updated realTotalCents array to localStorage
+      localStorage.setItem("realTotalCents", JSON.stringify(realTotalCents));
+
+      // Log the realTotalCents array
+      console.log("Updated realTotalCents:", getRealTotalCents());
+
       try {
         const response = await fetch("https://supersimplebackend.dev/orders", {
           method: "POST",
@@ -100,3 +112,16 @@ export function renderPaymentSummary() {
       }
     });
 }
+
+// Function to retrieve realTotalCents from localStorage
+export function getRealTotalCents() {
+  return JSON.parse(localStorage.getItem("realTotalCents")) || [];
+}
+
+// Function to clear realTotalCents from localStorage
+export function clearRealTotalCents() {
+  localStorage.removeItem("realTotalCents");
+}
+
+// Export realTotalCents
+export { realTotalCents };
